@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,10 +36,19 @@ public class DataService {
             if (files[i].isFile()) {
                 try {
                     FileInputStream fis = new FileInputStream(files[i]);
-                    result.put(files[i].getName(), 
-                    new BufferedReader(new InputStreamReader(fis)).lines().collect(Collectors.joining("\n")));
+                    BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+                    
+                    result.put(
+                        files[i].getName(), 
+                        br.lines().collect(Collectors.joining("\n"))
+                    );
+
+                    br.close();
+
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(DataService.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException io){
+                    Logger.getLogger(DataService.class.getName()).log(Level.SEVERE, null, io);
                 }
             }
         }
