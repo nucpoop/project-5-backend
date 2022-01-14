@@ -1,4 +1,4 @@
-package com.study.dev;
+package com.study.dev.service;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,6 +12,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import com.study.dev.model.ServerInfo;
+import com.study.dev.model.ServiceInfo;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
