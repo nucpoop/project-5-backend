@@ -1,6 +1,6 @@
 package com.study.dev.controller;
 
-import java.time.LocalDate;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
@@ -17,9 +17,8 @@ public class IndexController {
     public void healthCheck(HttpServletResponse response) throws Exception{
         Gson gson = new Gson();
         HashMap<String,String> map = new HashMap<String, String>();
-        LocalDate localDate = LocalDate.now();
 
-        map.put("currentTime", localDate.toString());
+        map.put("currentTime", new SimpleDateFormat("YYYY/MM/DD HH:mm:ss").format(System.currentTimeMillis()));
         response.getWriter().print(gson.toJson(map));
     }
 }
