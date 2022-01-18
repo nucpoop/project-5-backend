@@ -1,24 +1,18 @@
 package com.study.dev.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
 
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
-public class Default {
-    
-    @Column(nullable = false)
-    private Long insertId = 0L;
-
-    private Date insertTime;
-
-    private Long updateId = 0L;
-
-    private Date updateTime;
+@MappedSuperclass
+public abstract class Default {
+    private String insertId;
+    private LocalDateTime insertTime;
+    private String updateId;
+    private LocalDateTime updateTime;
 }

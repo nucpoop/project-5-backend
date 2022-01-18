@@ -19,5 +19,4 @@ public class DevApplication {
 	public PasswordEncoder passwordEncoder(){
 		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	}
-
 }
