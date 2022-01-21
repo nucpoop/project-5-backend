@@ -23,8 +23,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name="user")
 public class User extends Default implements UserDetails {
 
