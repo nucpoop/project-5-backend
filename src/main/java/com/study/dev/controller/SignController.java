@@ -5,19 +5,23 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.study.dev.model.Sign;
 import com.study.dev.model.User;
 import com.study.dev.security.JwtTokenProvider;
 import com.study.dev.service.UserService;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
 @RestController
+@RequestMapping("/user")
 public class SignController {
     
     @Autowired
@@ -29,41 +33,51 @@ public class SignController {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    @GetMapping(value = "/signin")
-    public Sign signInUser(HttpServletRequest request, @RequestBody User user){
+    @PostMapping(value = "/signin")
+    public ResponseEntity<Sign> signInUser(HttpServletRequest request, @RequestBody User user){
         User result = (User)userService.loadUserByUsername(user.getEmail());
-        Sign sign = new Sign();
-
+        
         if(!passwordEncoder.matches(user.getPassword(), result.getPassword())){
+            Sign sign = Sign.builder().build();
             sign.setResult("FAIL");
             sign.setMessage("ID or Password is invalid");
-            return sign;
+            return new ResponseEntity<Sign>(sign, HttpStatus.UNAUTHORIZED);
+        }else{
+            Sign sign = Sign.builder()
+                        .token(jwtTokenProvider.createToken(result.getEmail(), result.getRoles()))
+                        .name(result.getName())
+                        .email(result.getEmail())
+                        .build();
+            sign.setResult("SUCCESS");
+            sign.setMessage("Login Complete");
+            return new ResponseEntity<Sign>(sign, HttpStatus.OK);
         }
-
-        List<String> roleList = result.getRoles();
-        sign.setResult("SUCCESS");
-        sign.setMessage("Login Complete");
-        sign.setToken(jwtTokenProvider.createToken(result.getEmail(), roleList));
-        return sign;
     }
 
-    @PostMapping(value = "/signup")
+    @PutMapping(value = "/signup")
     public Sign signUpUser(HttpServletRequest request, @RequestBody User user){
+
         User userForLogin = user;
         List<String> roles = new ArrayList<>();
-        Sign sign = new Sign();
+        Sign sign = Sign.builder().build();
 
         roles.add("ROLE_USER");
         userForLogin.setRoles(roles);
         userForLogin.setPassword(passwordEncoder.encode(user.getPassword()));
-        boolean result = userService.joinUser(userForLogin);
 
-        if(result){
-            sign.setResult("SUCCESS");
-            sign.setMessage("Join Complete");
-        }else{
+        try {
+            boolean result = userService.joinUser(userForLogin);
+
+            if(result){
+                sign.setResult("SUCCESS");
+                sign.setMessage("Join Complete");
+            }else{
+                sign.setResult("FAIL");
+                sign.setMessage("Join Fail");
+            }
+        } catch (Exception e) {
             sign.setResult("FAIL");
-            sign.setMessage("Join Fail");
+            sign.setMessage(e.getMessage());
         }
         
         return sign;

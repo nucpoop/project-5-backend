@@ -23,42 +23,42 @@ public class JwtTokenProvider {
     @Value("spring.jwt.secret")
     private String secretKey;
 
-    private long tokenVaildMilisecond =  1000L * 60 * 60; // valid 1 hour
+    private long tokenVaildMilisecond = 1000L * 60 * 60; // valid 1 hour
 
     @PostConstruct
-    protected void init(){
+    protected void init() {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(String userPrimaryKey, List<String> roles){
+    public String createToken(String userPrimaryKey, List<String> roles) {
         Date now = new Date();
 
         Claims claims = Jwts.claims().setSubject(userPrimaryKey);
         claims.put("roles", roles);
-        
+
         return Jwts.builder()
-        .setClaims(claims)
-        .setIssuedAt(now)
-        .setExpiration(new Date(now.getTime() + tokenVaildMilisecond))
-        .signWith(SignatureAlgorithm.HS256, secretKey)
-        .compact();
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + tokenVaildMilisecond))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
     }
 
-    public Authentication getAuthentication(String token){
+    public Authentication getAuthentication(String token) {
         return null;
     }
 
-    public String getUserPrimaryKey(String token){
+    public String getUserPrimaryKey(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
-    public String resolveToken(HttpServletRequest request){
+    public String resolveToken(HttpServletRequest request) {
         return request.getHeader("X-AUTH-TOKEN");
     }
 
-    public boolean validateToken(String jwtToken){
+    public boolean validateToken(String jwtToken) {
         try {
-            Jws<Claims> claims =Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
             return false;
