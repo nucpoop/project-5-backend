@@ -26,7 +26,9 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean joinUser(User join){
-        if(userRepo.save(join) != null){
+        User resultUser = userRepo.save(join);
+        
+        if(resultUser != null){
             return true;
         }else{
             return false;
