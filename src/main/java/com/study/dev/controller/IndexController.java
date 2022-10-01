@@ -13,7 +13,7 @@ import com.google.gson.Gson;
 @RestController
 public class IndexController {
     
-    @GetMapping("/healthCheck")
+    @GetMapping("/health-check")
     public ResponseEntity<String> healthCheckEntity() {
         Gson gson = new Gson();
         HashMap<String, String> map = new HashMap<String, String>();
