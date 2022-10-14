@@ -30,7 +30,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)     //jwt token을 사용해서 세션 비활성화
         .and()
         .authorizeRequests()                                                            //request 사용권한
-        .antMatchers("/user/signin","/user/signup","/index","/healthCheck").permitAll()
+        .antMatchers("/user/signin","/user/signup","/index","/health-check").permitAll()
         .anyRequest().hasRole("USER")
         .and()
         .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
