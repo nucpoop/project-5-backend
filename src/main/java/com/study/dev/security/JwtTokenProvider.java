@@ -8,7 +8,10 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -23,7 +26,9 @@ public class JwtTokenProvider {
     @Value("spring.jwt.secret")
     private String secretKey;
 
-    private long tokenVaildMilisecond = 1000L * 60 * 60; // valid 1 hour
+    private final UserDetailsService userDetailsService;
+
+    private final long tokenVaildMilisecond = 1000L * 60 * 60; // valid 1 hour
 
     @PostConstruct
     protected void init() {
@@ -45,7 +50,8 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token) {
-        return null;
+        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPrimaryKey(token));
+        return new UsernamePasswordAuthenticationToken(userDetails,"",userDetails.getAuthorities());
     }
 
     public String getUserPrimaryKey(String token) {
