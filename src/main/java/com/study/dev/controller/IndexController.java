@@ -16,7 +16,7 @@ public class IndexController {
     @GetMapping("/health-check")
     public ResponseEntity<String> healthCheckEntity() {
         Gson gson = new Gson();
-        HashMap<String, String> map = new HashMap<String, String>();
+        HashMap<String, String> map = new HashMap<>();
 
         map.put("currentTime", new SimpleDateFormat("YYYY/MM/dd HH:mm:ss").format(System.currentTimeMillis()));
         return new ResponseEntity<>(gson.toJson(map), HttpStatus.OK);

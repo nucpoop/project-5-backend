@@ -1,4 +1,4 @@
-package com.study.dev.model;
+package com.study.dev.model.response;
 
 import lombok.Data;
 

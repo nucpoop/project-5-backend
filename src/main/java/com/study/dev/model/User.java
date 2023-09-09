@@ -28,7 +28,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name="user")
+@Table(name="user_master")
 public class User extends Default implements UserDetails {
 
     private static final long serialVersionUID = 1L;
