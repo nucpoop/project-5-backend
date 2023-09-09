@@ -26,11 +26,14 @@ public class UserService {
 
     public ResponseEntity<BaseResponse<Sign>> signInUser(User user) {
         BaseResponse<Sign> response = new BaseResponse<>();
-        HttpStatus resultStatus;
-
         User result = (User) userDetailsService.loadUserByUsername(user.getEmail());
 
-        if (passwordEncoder.matches(user.getPassword(), result.getPassword())) {
+        if (result == null) {
+            response.setResult(ResultCode.FAIL);
+            response.setMessage(ResultMessage.USER_NOT_FOUND);
+            response.setData(Sign.builder().build());
+            response.setHttpStatus(HttpStatus.UNAUTHORIZED);
+        } else if (passwordEncoder.matches(user.getPassword(), result.getPassword())) {
             response.setResult(ResultCode.SUCCESS);
             response.setMessage(ResultMessage.LOGIN_COMPLETE);
             response.setData(
@@ -40,14 +43,15 @@ public class UserService {
                             .email(result.getEmail())
                             .build()
             );
-            resultStatus = HttpStatus.OK;
+            response.setHttpStatus(HttpStatus.OK);
         } else {
             response.setResult(ResultCode.UNAUTHORIZED);
             response.setMessage(ResultMessage.INVALID_PASSWORD);
             response.setData(Sign.builder().build());
-            resultStatus = HttpStatus.UNAUTHORIZED;
+            response.setHttpStatus(HttpStatus.UNAUTHORIZED);
         }
-        return new ResponseEntity<>(response, resultStatus);
+
+        return new ResponseEntity<>(response, response.getHttpStatus());
     }
 
     public ResponseEntity<BaseResponse<String>> signUpUser(User user) {
