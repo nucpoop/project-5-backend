@@ -1,24 +1,21 @@
 package com.study.dev.model;
 
-import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
-
-import lombok.Getter;
-import lombok.Setter;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @MappedSuperclass
 public abstract class Default {
-    private String insertId;
     private LocalDateTime insertTime;
-    private String updateId;
     private LocalDateTime updateTime;
 
     @PrePersist
-    public void initTime(){
+    public void initTime() {
         this.insertTime = LocalDateTime.now();
         this.updateTime = LocalDateTime.now();
     }
