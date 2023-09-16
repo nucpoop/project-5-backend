@@ -1,0 +1,46 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
+  jwt:
+    secret: test
+
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: DEBUG
+        SQL: DEBUG
+
+datapath: ./data
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: ${db.id}
+    password: ${db.pw}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://postgres:5432/postgres
+    username: ${db.id}
+    password: ${db.pw}
