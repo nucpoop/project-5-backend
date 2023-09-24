@@ -1,6 +1,5 @@
 package com.study.dev.service;
 
-import com.study.dev.exception.UserNotFoundException;
 import com.study.dev.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

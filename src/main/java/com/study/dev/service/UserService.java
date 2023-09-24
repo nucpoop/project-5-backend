@@ -1,12 +1,12 @@
 package com.study.dev.service;
 
-import com.study.dev.model.dto.SignInRequest;
-import com.study.dev.model.dto.SignUpResponse;
 import com.study.dev.model.User;
+import com.study.dev.model.dto.SignInRequest;
 import com.study.dev.model.dto.SignUpRequest;
-import com.study.dev.model.response.BaseResponse;
-import com.study.dev.model.response.ResultCode;
-import com.study.dev.model.response.ResultMessage;
+import com.study.dev.model.dto.SignUpResponse;
+import com.study.dev.model.dto.BaseResponse;
+import com.study.dev.model.dto.ResultCode;
+import com.study.dev.model.dto.ResultMessage;
 import com.study.dev.repository.UserRepository;
 import com.study.dev.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;

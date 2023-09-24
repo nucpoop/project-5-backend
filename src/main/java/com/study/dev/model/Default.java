@@ -11,12 +11,12 @@ import java.time.LocalDateTime;
 @Setter
 @MappedSuperclass
 public abstract class Default {
-    private LocalDateTime insertTime;
-    private LocalDateTime updateTime;
+    private LocalDateTime insertDateTime;
+    private LocalDateTime updateDateTime;
 
     @PrePersist
     public void initTime() {
-        this.insertTime = LocalDateTime.now();
-        this.updateTime = LocalDateTime.now();
+        this.insertDateTime = LocalDateTime.now();
+        this.updateDateTime = LocalDateTime.now();
     }
 }

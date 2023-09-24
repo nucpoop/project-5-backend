@@ -23,15 +23,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web){
-        web.ignoring().antMatchers("/v3/api-docs",  "/configuration/ui",
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers("/v3/api-docs", "/configuration/ui",
                 "/swagger-resources", "/configuration/security",
-                "/swagger-ui.html", "/webjars/**","/swagger/**");
+                "/swagger-ui.html", "/webjars/**", "/swagger/**");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         http.httpBasic().disable()                                                      //rest api 서비스 이므로 기본설정 사용안함
                 .csrf().disable()                                                               //rest api 서비스 이므로 csrf 보안 필요안함
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)     //jwt token을 사용해서 세션 비활성화

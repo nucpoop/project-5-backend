@@ -1,4 +1,4 @@
-package com.study.dev.model.response;
+package com.study.dev.model.dto;
 
 public final class ResultCode {
     public static final String SUCCESS = "SUCCESS";

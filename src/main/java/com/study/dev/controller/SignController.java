@@ -1,10 +1,9 @@
 package com.study.dev.controller;
 
+import com.study.dev.model.dto.BaseResponse;
 import com.study.dev.model.dto.SignInRequest;
 import com.study.dev.model.dto.SignUpRequest;
 import com.study.dev.model.dto.SignUpResponse;
-import com.study.dev.model.User;
-import com.study.dev.model.response.BaseResponse;
 import com.study.dev.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

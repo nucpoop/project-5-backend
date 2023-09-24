@@ -1,4 +1,4 @@
-package com.study.dev.model.response;
+package com.study.dev.model.dto;
 
 public final class ResultMessage {
     public static final String LOGIN_COMPLETE = "Login complete";
