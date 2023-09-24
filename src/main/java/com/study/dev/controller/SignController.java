@@ -1,6 +1,8 @@
 package com.study.dev.controller;
 
-import com.study.dev.model.Sign;
+import com.study.dev.model.dto.SignInRequest;
+import com.study.dev.model.dto.SignUpRequest;
+import com.study.dev.model.dto.SignUpResponse;
 import com.study.dev.model.User;
 import com.study.dev.model.response.BaseResponse;
 import com.study.dev.service.UserService;
@@ -18,12 +20,12 @@ public class SignController {
     private final UserService userService;
 
     @PostMapping(value = "/sign-in")
-    public ResponseEntity<BaseResponse<Sign>> signInUser(@RequestBody User user) {
-        return userService.signInUser(user);
+    public ResponseEntity<BaseResponse<SignUpResponse>> signInUser(@RequestBody SignInRequest signInRequest) {
+        return userService.signInUser(signInRequest);
     }
 
     @PostMapping(value = "/sign-up")
-    public ResponseEntity<BaseResponse<String>> signUpUser(@RequestBody User user) {
-        return userService.signUpUser(user);
+    public ResponseEntity<BaseResponse<String>> signUpUser(@RequestBody SignUpRequest signUpRequest) {
+        return userService.signUpUser(signUpRequest);
     }
 }

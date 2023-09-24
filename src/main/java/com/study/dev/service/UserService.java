@@ -1,7 +1,9 @@
 package com.study.dev.service;
 
-import com.study.dev.model.Sign;
+import com.study.dev.model.dto.SignInRequest;
+import com.study.dev.model.dto.SignUpResponse;
 import com.study.dev.model.User;
+import com.study.dev.model.dto.SignUpRequest;
 import com.study.dev.model.response.BaseResponse;
 import com.study.dev.model.response.ResultCode;
 import com.study.dev.model.response.ResultMessage;
@@ -24,20 +26,20 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public ResponseEntity<BaseResponse<Sign>> signInUser(User user) {
-        BaseResponse<Sign> response = new BaseResponse<>();
-        User result = (User) userDetailsService.loadUserByUsername(user.getEmail());
+    public ResponseEntity<BaseResponse<SignUpResponse>> signInUser(SignInRequest signInRequest) {
+        BaseResponse<SignUpResponse> response = new BaseResponse<>();
+        User result = (User) userDetailsService.loadUserByUsername(signInRequest.getEmail());
 
         if (result == null) {
             response.setResult(ResultCode.FAIL);
             response.setMessage(ResultMessage.USER_NOT_FOUND);
-            response.setData(Sign.builder().build());
+            response.setData(SignUpResponse.builder().build());
             response.setHttpStatus(HttpStatus.UNAUTHORIZED);
-        } else if (passwordEncoder.matches(user.getPassword(), result.getPassword())) {
+        } else if (passwordEncoder.matches(signInRequest.getPassword(), result.getPassword())) {
             response.setResult(ResultCode.SUCCESS);
             response.setMessage(ResultMessage.LOGIN_COMPLETE);
             response.setData(
-                    Sign.builder()
+                    SignUpResponse.builder()
                             .token(jwtTokenProvider.createToken(result.getEmail(), result.getRoles()))
                             .name(result.getName())
                             .email(result.getEmail())
@@ -47,16 +49,17 @@ public class UserService {
         } else {
             response.setResult(ResultCode.UNAUTHORIZED);
             response.setMessage(ResultMessage.INVALID_PASSWORD);
-            response.setData(Sign.builder().build());
+            response.setData(SignUpResponse.builder().build());
             response.setHttpStatus(HttpStatus.UNAUTHORIZED);
         }
 
         return new ResponseEntity<>(response, response.getHttpStatus());
     }
 
-    public ResponseEntity<BaseResponse<String>> signUpUser(User user) {
+    public ResponseEntity<BaseResponse<String>> signUpUser(SignUpRequest signUp) {
         BaseResponse<String> response = new BaseResponse<>();
         HttpStatus resultStatus = HttpStatus.NO_CONTENT;
+        User user = new User(signUp);
         user.setRoles(List.of("USER"));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 

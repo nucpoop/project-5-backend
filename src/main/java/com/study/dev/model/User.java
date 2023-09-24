@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.study.dev.model.dto.SignUpRequest;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -49,6 +50,12 @@ public class User extends Default implements UserDetails {
     private List<String> roles = new ArrayList<>();
 
     public User(){}
+
+    public User(SignUpRequest signUpRequest) {
+        this.email = signUpRequest.getEmail();
+        this.name = signUpRequest.getName();
+        this.password = signUpRequest.getPassword();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
