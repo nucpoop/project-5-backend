@@ -33,6 +33,7 @@ dependencies {
 	implementation group: 'org.mybatis', name: 'mybatis', version: '3.5.7'
 	implementation group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '2.2.0'
 	implementation 'org.postgresql:postgresql'
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
 //	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.7.3'
 }
 
