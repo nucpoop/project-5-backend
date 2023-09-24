@@ -9,17 +9,14 @@ import com.google.gson.Gson;
 import com.study.dev.model.Product;
 import com.study.dev.service.ProductService;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class TestController {
+public class ProductController {
     private final ProductService productService;
 
-    public TestController(ProductService productService) {
+    public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
@@ -30,14 +27,4 @@ public class TestController {
 
         response.getWriter().print(gson.toJson(products));
     }
-
-    @GetMapping("/test")
-    public void testApi(HttpServletResponse response) throws Exception{
-        Gson gson = new Gson();
-
-        HashMap<String,String> map = new HashMap<>();
-        map.put("test", "Hello World");
-        response.getWriter().print(gson.toJson(map));
-    }
-    
 }
